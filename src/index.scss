@@ -1,3 +1,16 @@
+/* _________ Variables _________ */
+$primary: #2fac84;
+$primary-fade: #248264;
+
+$text-primary: #191917;
+$text-primary-light: #8a9590;
+$text-bright: #fefefe;
+$text-bright-fade: #f7f7f7;
+
+$brand-gray: #e6e3dd;
+
+$website-background: #fff;
+
 *,
 *::before,
 *::after {
@@ -6,6 +19,7 @@
 
 body {
   margin: 0;
+  color: $text-primary;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
@@ -14,11 +28,11 @@ body {
 }
 
 img {
-  max-inline-size: 100%; /* prevents images from expanding in width beyond their container  */
+  max-inline-size: 100%;
 }
 
-/* _________ Variables _________ */
-$primary: #96f2d7;
-
-$text-primary: #191917;
-$text-primary-light: #8a9590;
+.page-wrapper {
+  margin: 0 auto;
+  margin-block-start: 50px;
+  inline-size: 1000px;
+}

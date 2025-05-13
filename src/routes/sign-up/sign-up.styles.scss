@@ -1,0 +1,39 @@
+@import '../../index.scss';
+
+.form-wrapper {
+  margin-block-start: 150px;
+
+  h1 {
+    text-align: center;
+  }
+}
+
+.new-user-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  input {
+    inline-size: 250px;
+    block-size: 35px;
+    border: 1px solid $brand-gray;
+    border-radius: 7px;
+    padding: 8px 12px;
+    background-color: #00000000;
+    color: inherit;
+    font-size: 1.15rem;
+    outline: none;
+    align-self: center;
+
+    /* Change autocomplete styles in WebKit */
+    &:-webkit-autofill,
+    &:-webkit-autofill:hover,
+    &:-webkit-autofill:focus {
+      -webkit-text-fill-color: inherit;
+      -webkit-box-shadow: 0 0 0px 1000px $website-background inset;
+    }
+    &[type='password'] {
+      letter-spacing: 0.05rem;
+    }
+  }
+}

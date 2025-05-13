@@ -1,7 +1,8 @@
 @import '../../index.scss';
 
 nav {
-  border-bottom: 1px rgb(59, 104, 59) solid;
+  border-bottom: 1px $brand-gray solid;
+  padding: 10px 70px;
 
   ul {
     display: flex;
@@ -14,20 +15,29 @@ nav {
       inline-size: 60px;
     }
     li {
+      display: flex;
+      align-items: center;
+
       a {
         display: block;
-        padding: 10px 20px;
         text-align: center;
         text-decoration: none;
-        color: $text-primary;
+        align-items: center;
         font-weight: bold;
-        &:hover {
+        color: inherit;
+        &:hover,
+        &:focus-visible {
           color: $text-primary-light;
         }
       }
     }
     div {
       display: flex;
+      gap: 10px;
+
+      a {
+        padding: 5px;
+      }
     }
   }
 }

@@ -1,25 +1,29 @@
-import { Link } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 import './global-navigation.styles.scss';
+import { Fragment } from 'react';
 
 function GlobalNavigation() {
   return (
-    <nav>
-      <ul>
-        <li>
-          <Link to="/">
-            <img src="images/logo.png" alt="Tamra Logo" />
-          </Link>
-        </li>
-        <div>
+    <Fragment>
+      <nav>
+        <ul>
           <li>
-            <Link to="/auth/login">Login</Link>
+            <Link to="/">
+              <img src={'/images/logo.png'} alt="Tamra Logo" />
+            </Link>
           </li>
-          <li>
-            <Link to="/auth/signup">Join</Link>
-          </li>
-        </div>
-      </ul>
-    </nav>
+          <div>
+            <li>
+              <Link to="/auth/login">Login</Link>
+            </li>
+            <li>
+              <Link to="/auth/signup">Join</Link>
+            </li>
+          </div>
+        </ul>
+      </nav>
+      <Outlet />
+    </Fragment>
   );
 }
 
