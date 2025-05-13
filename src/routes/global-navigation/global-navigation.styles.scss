@@ -1,0 +1,33 @@
+@import '../../index.scss';
+
+nav {
+  border-bottom: 1px rgb(59, 104, 59) solid;
+
+  ul {
+    display: flex;
+    justify-content: space-between;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+
+    img {
+      inline-size: 60px;
+    }
+    li {
+      a {
+        display: block;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        color: $text-primary;
+        font-weight: bold;
+        &:hover {
+          color: $text-primary-light;
+        }
+      }
+    }
+    div {
+      display: flex;
+    }
+  }
+}
