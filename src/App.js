@@ -4,6 +4,7 @@ import LandingPage from './routes/landing-page/landing-page.component';
 import { AuthProvider } from './context/auth.context';
 import SignUp from './routes/sign-up/sign-up.component';
 import Login from './routes/login/login.component';
+import PrivateRoute from './routes/private-route/private-route.component';
 
 function App() {
   return (
@@ -14,7 +15,9 @@ function App() {
           <Route path="auth/signup" element={<SignUp />} />
           <Route path="auth/login" element={<Login />} />
 
-          <Route path="me" element={<h1>Profile</h1>} />
+          <Route element={<PrivateRoute />}>
+            <Route path="me" element={<h1>Profile</h1>} />
+          </Route>
         </Route>
       </Routes>
     </AuthProvider>
