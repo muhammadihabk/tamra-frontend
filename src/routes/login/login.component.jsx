@@ -3,11 +3,10 @@ import Button from '../../components/button/button.component';
 import axios from 'axios';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/auth.context';
-import './sign-up.styles.scss';
+import '../sign-up/sign-up.styles.scss';
 
-function SignUp() {
+function Login() {
   const defaultFormFields = {
-    name: '',
     email: '',
     password: '',
   };
@@ -22,7 +21,7 @@ function SignUp() {
     e.preventDefault();
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_AUTH_BASE_URL}/sign-up`,
+        `${process.env.REACT_APP_AUTH_BASE_URL}/sign-in`,
         formFields
       );
 
@@ -41,16 +40,8 @@ function SignUp() {
 
   return (
     <div className="page-wrapper form-wrapper">
-      <h1>Sign Up</h1>
+      <h1>Login</h1>
       <form className="login-form" onSubmit={handleFormSubmition}>
-        <input
-          name="name"
-          placeholder="Name"
-          value={formFields.name}
-          type="text"
-          required
-          onChange={handleOnChange}
-        />
         <input
           name="email"
           placeholder="Email"
@@ -67,10 +58,10 @@ function SignUp() {
           required
           onChange={handleOnChange}
         />
-        <Button inType="submit" text="Sign up" />
+        <Button inType="submit" text="Login" />
       </form>
     </div>
   );
 }
 
-export default SignUp;
+export default Login;
