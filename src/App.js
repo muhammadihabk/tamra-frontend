@@ -5,6 +5,7 @@ import { AuthProvider } from './context/auth.context';
 import SignUp from './routes/sign-up/sign-up.component';
 import Login from './routes/login/login.component';
 import PrivateRoute from './routes/private-route/private-route.component';
+import Profile from './routes/profile/profile.component';
 
 function App() {
   return (
@@ -16,7 +17,7 @@ function App() {
           <Route path="auth/login" element={<Login />} />
 
           <Route element={<PrivateRoute />}>
-            <Route path="me" element={<h1>Profile</h1>} />
+            <Route path="me" element={<Profile />} />
           </Route>
         </Route>
       </Routes>

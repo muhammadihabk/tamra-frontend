@@ -10,22 +10,25 @@ function Login() {
     email: '',
     password: '',
   };
-  const { token, setToken } = useAuth();
+  const { setIsUserAuthorized } = useAuth();
   const [formFields, setFormFields] = useState(defaultFormFields);
   const navigate = useNavigate();
-  if (token) {
-    return <Navigate to="/me" replace />;
-  }
-
   const handleFormSubmition = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_AUTH_BASE_URL}/sign-in`,
-        formFields
+        formFields,
+        {
+          withCredentials: true,
+        }
       );
 
-      setToken(response.data.token);
+      if (!response.data.id) {
+        return;
+      }
+
+      setIsUserAuthorized(true);
       navigate('/me');
     } catch (error) {
       console.error(error);

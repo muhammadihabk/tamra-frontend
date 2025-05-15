@@ -1,18 +1,50 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
+import axios from 'axios';
 
 const AuthContext = createContext({
-  token: null,
-  setToken: () => {},
-  clearToken: () => {},
+  isUserAuthorized: null,
+  setIsUserAuthorized: () => {},
+  clear: () => {},
 });
 
 function AuthProvider({ children }) {
-  const [token, setToken] = useState(null);
+  const [isUserAuthorized, setIsUserAuthorized] = useState(null);
+
+  useEffect(() => {
+    const updateAuthContext = async () => {
+      try {
+        const query = `
+          query {
+            me
+          }
+        `;
+        const response = await axios.post(
+          process.env.REACT_APP_BACKEND_BASE_URL,
+          {
+            query,
+          },
+          {
+            withCredentials: true,
+          }
+        );
+
+        if (!response.data.data?.me) {
+          return;
+        }
+
+        setIsUserAuthorized(true);
+      } catch (error) {
+        return;
+      }
+    };
+
+    updateAuthContext();
+  }, []);
 
   const value = {
-    token,
-    setToken: (newToken) => setToken(newToken),
-    clearToken: () => setToken(null),
+    isUserAuthorized,
+    setIsUserAuthorized: (v) => setIsUserAuthorized(v),
+    clear: () => setIsUserAuthorized(null),
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

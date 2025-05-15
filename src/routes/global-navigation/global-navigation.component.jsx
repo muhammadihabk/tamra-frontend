@@ -4,7 +4,7 @@ import { Fragment } from 'react';
 import { useAuth } from '../../context/auth.context';
 
 function GlobalNavigation() {
-  const { token } = useAuth();
+  const { isUserAuthorized } = useAuth();
 
   return (
     <Fragment>
@@ -16,7 +16,7 @@ function GlobalNavigation() {
             </Link>
           </li>
           <div>
-            {!token && (
+            {!isUserAuthorized && (
               <Fragment>
                 <li>
                   <Link to="/auth/login">Login</Link>
@@ -26,7 +26,7 @@ function GlobalNavigation() {
                 </li>
               </Fragment>
             )}
-            {token && (
+            {isUserAuthorized && (
               <Fragment>
                 <li>
                   <Link to="/me"><img src={'/images/default-profile-pic.png'} alt="Profile Picture" /></Link>
