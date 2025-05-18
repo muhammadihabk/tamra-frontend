@@ -8,9 +8,11 @@ $text-primary-light: #8a9590;
 $text-bright: #fefefe;
 $text-bright-fade: #f7f7f7;
 
-$border: 1px solid $brand-gray;
-
 $website-background: #f5f5f5;
+$border: 1px solid $brand-gray;
+$button-fade: #ededed7d;
+$boxes-background: #ffffff;
+$boxes-border-radius: 15px;
 
 *,
 *::before,
@@ -38,4 +40,36 @@ img {
   margin: 0 auto;
   margin-block-start: 50px;
   inline-size: 1000px;
+}
+
+.form-input {
+  inline-size: 300px;
+  block-size: 35px;
+  border: $border;
+  border-radius: 7px;
+  padding: 8px 12px;
+  background-color: #00000000;
+  color: inherit;
+  font-size: 1.15rem;
+  font: inherit;
+  outline: none;
+  align-self: center;
+}
+
+.CRUD-button {
+  inline-size: 35px;
+  block-size: 35px;
+  border: $border;
+  border-radius: 25%;
+  background-color: #00000000;
+  color: inherit;
+  font: inherit;
+  font-size: 21px;
+  text-align: center;
+  outline: none;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $button-fade;
+  }
 }

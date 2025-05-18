@@ -1,13 +1,13 @@
 @import '../../index.scss';
 
 $cells-padding-left: 40px;
-$options-block-size: 35px;
+$options-block-size: 40px;
 
 .habits-week-logs {
   padding: 20px;
   border: $border;
   background-color: #ffffff;
-  border-radius: 15px;
+  border-radius: $boxes-border-radius;
 
   .habit-week-logs-options {
     display: flex;
@@ -18,35 +18,13 @@ $options-block-size: 35px;
     inline-size: 400px;
   }
 
-  input {
-    inline-size: 300px;
+  .form-input {
     block-size: $options-block-size;
-    border: $border;
-    border-radius: 7px;
-    padding: 8px 12px;
-    background-color: #00000000;
-    color: inherit;
-    font-size: 1.15rem;
-    font: inherit;
-    outline: none;
-    align-self: center;
   }
 
-  button {
+  .CRUD-button {
     inline-size: $options-block-size;
     block-size: $options-block-size;
-    border: $border;
-    border-radius: 25%;
-    background-color: #00000000;
-    color: inherit;
-    font: inherit;
-    font-size: 21px;
-    text-align: center;
-    outline: none;
-    cursor: pointer;
-  }
-  &button:hover {
-    background-color: $primary-fade;
   }
 
   .week-days {
@@ -61,7 +39,7 @@ $options-block-size: 35px;
 
   thead th {
     padding: 20px;
-    text-align: end;
+    text-align: center;
     font: inherit;
   }
 
@@ -78,13 +56,17 @@ $options-block-size: 35px;
 
   tbody td {
     padding: 20px;
-    text-align: end;
+    text-align: center;
+
     &:first-child {
       font-weight: bold !important;
     }
     &:not(:first-child) {
       font-size: 1.25rem;
-      padding-left: $cells-padding-left;
+      cursor: pointer;
+    }
+    &:not(:first-child):hover {
+      background-color: $button-fade;
     }
     &.goal-met {
       color: $primary;

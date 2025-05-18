@@ -1,0 +1,72 @@
+@import '../../index.scss';
+
+$overlay-color: rgba(0, 0, 0, 0.5);
+
+.clickable-text {
+  cursor: pointer;
+  text-decoration: underline;
+
+  &:hover {
+    color: $text-bright-fade;
+  }
+}
+
+.modal-wrapper-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: $overlay-color;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+
+.modal-content {
+  background-color: $boxes-background;
+  padding: 10px;
+  border-radius: $boxes-border-radius;
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
+  max-inline-size: 384px;
+  inline-size: 100%;
+  position: relative;
+
+  form {
+    padding: 30px;
+  }
+}
+
+.modal-header {
+  text-align: end;
+}
+
+.CRUD-button {
+  inline-size: 35px;
+  block-size: 35px;
+  border: $border;
+  border-radius: 25%;
+  background-color: #00000000;
+  color: inherit;
+  font: inherit;
+  font-size: 21px;
+  text-align: center;
+  outline: none;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $button-fade;
+  }
+}
+
+.form-actions {
+  text-align: center;
+  margin-block-start: 20px;
+}

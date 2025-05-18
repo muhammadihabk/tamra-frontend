@@ -13,18 +13,7 @@
   flex-direction: column;
   gap: 10px;
 
-  input {
-    inline-size: 250px;
-    block-size: 35px;
-    border: $border;
-    border-radius: 7px;
-    padding: 8px 12px;
-    background-color: #00000000;
-    color: inherit;
-    font-size: 1.15rem;
-    outline: none;
-    align-self: center;
-
+  .form-input {
     /* Change autocomplete styles in WebKit */
     &:-webkit-autofill,
     &:-webkit-autofill:hover,
