@@ -1,4 +1,5 @@
 /* _________ Variables _________ */
+$brand-gray: #e6e3dd;
 $primary: #2fac84;
 $primary-fade: #248264;
 
@@ -7,9 +8,9 @@ $text-primary-light: #8a9590;
 $text-bright: #fefefe;
 $text-bright-fade: #f7f7f7;
 
-$brand-gray: #e6e3dd;
+$border: 1px solid $brand-gray;
 
-$website-background: #fff;
+$website-background: #f5f5f5;
 
 *,
 *::before,
@@ -20,9 +21,11 @@ $website-background: #fff;
 body {
   margin: 0;
   color: $text-primary;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  background-color: $website-background;
+  font-family: 'Playpen Sans Arabic', cursive;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

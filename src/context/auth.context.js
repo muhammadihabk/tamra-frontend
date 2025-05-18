@@ -2,22 +2,23 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 
 const AuthContext = createContext({
-  isUserAuthorized: null,
-  setIsUserAuthorized: () => {},
+  userId: null,
+  setUserId: () => {},
   clear: () => {},
 });
 
+function useAuth() {
+  return useContext(AuthContext);
+}
+
 function AuthProvider({ children }) {
-  const [isUserAuthorized, setIsUserAuthorized] = useState(null);
+  const [userId, setUserId] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const updateAuthContext = async () => {
       try {
-        const query = `
-          query {
-            me
-          }
-        `;
+        const query = `query { me }`;
         const response = await axios.post(
           process.env.REACT_APP_BACKEND_BASE_URL,
           {
@@ -27,31 +28,35 @@ function AuthProvider({ children }) {
             withCredentials: true,
           }
         );
+        const id = response.data.data?.me;
 
-        if (!response.data.data?.me) {
-          return;
-        }
-
-        setIsUserAuthorized(true);
+        setUserId(id || null);
       } catch (error) {
-        return;
+        setUserId(null);
+      } finally {
+        setIsLoading(false);
       }
     };
 
     updateAuthContext();
   }, []);
 
+  const login = (id) => {
+    setUserId(id);
+  };
+
+  const logout = async () => {
+    setUserId(null);
+  };
+
   const value = {
-    isUserAuthorized,
-    setIsUserAuthorized: (v) => setIsUserAuthorized(v),
-    clear: () => setIsUserAuthorized(null),
+    userId,
+    isLoading,
+    login,
+    logout,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-}
-
-function useAuth() {
-  return useContext(AuthContext);
 }
 
 export { AuthProvider, useAuth };

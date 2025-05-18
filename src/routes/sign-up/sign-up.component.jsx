@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Button from '../../components/button/button.component';
 import axios from 'axios';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/auth.context';
 import './sign-up.styles.scss';
 
@@ -11,7 +11,7 @@ function SignUp() {
     email: '',
     password: '',
   };
-  const {  setIsUserAuthorized } = useAuth();
+  const { login } = useAuth();
   const [formFields, setFormFields] = useState(defaultFormFields);
   const navigate = useNavigate();
 
@@ -23,11 +23,12 @@ function SignUp() {
         formFields
       );
 
-      if (!response.data.id) {
+      const id = response.data.id;
+      if (!id) {
         return;
       }
 
-      setIsUserAuthorized(true);
+      login(id);
       navigate('/me');
     } catch (error) {
       console.error(error);

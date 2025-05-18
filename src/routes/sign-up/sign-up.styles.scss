@@ -16,7 +16,7 @@
   input {
     inline-size: 250px;
     block-size: 35px;
-    border: 1px solid $brand-gray;
+    border: $border;
     border-radius: 7px;
     padding: 8px 12px;
     background-color: #00000000;

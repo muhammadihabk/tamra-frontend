@@ -1,0 +1,32 @@
+@import '../../index.scss';
+
+$spinner-animation: spin 0.5s linear infinite;
+
+.spinner {
+  display: inline-block;
+  inline-size: 50px;
+  block-size: 50px;
+  border: 2px solid $text-primary-light;
+  border-radius: 50%;
+  border-top-color: #000;
+  animation: $spinner-animation;
+  -webkit-animation: $spinner-animation;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@-webkit-keyframes spin {
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+.spinner-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
