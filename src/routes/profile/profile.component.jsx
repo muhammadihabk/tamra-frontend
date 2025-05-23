@@ -2,8 +2,10 @@ import { useAuth } from '../../context/auth.context';
 import Spinner from '../../components/spinner/spinner.component';
 import './profile.styles.scss';
 import Modal from '../../components/modal/modal.component';
-import { useQuery, gql } from '@apollo/client';
+import { useQuery, gql, useMutation } from '@apollo/client';
 import { useState } from 'react';
+import HabitScheduleForm from '../../components/habit-schedule-form/habit-schedule-form.component';
+import Button from '../../components/button/button.component';
 
 function getLast7Logs(logs) {
   return logs.slice(-7);
@@ -38,23 +40,26 @@ function getPast7Days() {
   return past7Days;
 }
 
-let clickedData = null;
-function handleOpenModal(setIsModalOpen) {
+let updateLogsClickedData = null;
+function handleOpenUpdateLogsModal(setIsUpdateLogsModalOpen) {
   return (e) => {
     const dataset = e.target.dataset;
 
-    clickedData = {
+    updateLogsClickedData = {
       habitInstanceId: dataset.habitId,
       date: dataset.date,
     };
-    setIsModalOpen(true);
+    setIsUpdateLogsModalOpen(true);
   };
 }
 
 function getJSXLogs(options) {
-  const { habit, setIsModalOpen } = options;
-
+  const { habit, setIsUpdateLogsModalOpen } = options;
   const { logs: inLogs } = habit;
+  if (!inLogs) {
+    return [];
+  }
+
   const logs = getLast7Logs(inLogs);
   const jsxLogs = [];
   const past7Days = getPast7Days();
@@ -74,7 +79,7 @@ function getJSXLogs(options) {
         data-habit-id={habit._id}
         data-count={count}
         data-date={new Date(day).toISOString()}
-        onClick={handleOpenModal(setIsModalOpen)}
+        onClick={handleOpenUpdateLogsModal(setIsUpdateLogsModalOpen)}
       >
         {count}
       </td>
@@ -84,53 +89,101 @@ function getJSXLogs(options) {
   return jsxLogs;
 }
 
-function Profile() {
-  const { userId } = useAuth();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const getUser = gql`
-    query ($id: String!) {
-      user(id: $id) {
+function handleCloseModal(setOpenModal, refetchData) {
+  if (refetchData) {
+    refetchData(true);
+  }
+  setOpenModal(false);
+}
+
+function handleSubmit(options) {
+  const { callAPI, payload, refetchData, setOpenModal } = options;
+
+  try {
+    callAPI(payload);
+    handleCloseModal(setOpenModal, refetchData);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+function handleAddHabitButton(setIsAddHabitModalOpen) {
+  return () => {
+    setIsAddHabitModalOpen(true);
+  };
+}
+
+const getUser = gql`
+  query ($id: String!) {
+    user(id: $id) {
+      _id
+      name
+      email
+      picture
+      createdAt
+      updatedAt
+    }
+
+    habitsByUserId(id: $id) {
+      _id
+      habitDefinitionId
+      createdAt
+      updatedAt
+      logs {
+        _id
+        count
+        date
+      }
+      goal {
+        count
+        repeat {
+          every
+          interval
+          on
+          at
+        }
+      }
+      habitDefinition {
         _id
         name
-        email
-        picture
         createdAt
         updatedAt
-      }
-
-      habitsByUserId(id: $id) {
-        _id
-        habitDefinitionId
-        createdAt
-        updatedAt
-        logs {
-          _id
-          count
-          date
-        }
-        goal {
-          count
-          reminder
-          repeat {
-            on
-            every
-            interval
-          }
-        }
-        habitDefinition {
-          _id
-          name
-          createdAt
-          updatedAt
-        }
       }
     }
-  `;
+  }
+`;
+
+const createHabitLogQuery = gql`
+  mutation ($createHabitLogInput: CreateHabitLogInput!) {
+    createHabitLog(createHabitLogInput: $createHabitLogInput) {
+      message
+    }
+  }
+`;
+
+function Profile() {
+  const { userId } = useAuth();
+  const [isUpdateLogsModalOpen, setIsUpdateLogsModalOpen] = useState(false);
+  const [createHabitLog] = useMutation(createHabitLogQuery);
+  const [updateLogsModalForm, setUpdateLogsModalForm] = useState({});
+  const [isAddHabitModalOpen, setIsAddHabitModalOpen] = useState(false);
+
+  function handleInputChange(stateSetter) {
+    return (e) => {
+      const { name, value } = e.target;
+
+      stateSetter((form) => ({
+        ...form,
+        [name]: value,
+      }));
+    };
+  }
+
   const {
     loading,
     error,
     data: user,
-    refetch: refetchLogsData,
+    refetch: refetchData,
   } = useQuery(getUser, {
     variables: { id: userId },
     skip: !userId,
@@ -147,7 +200,11 @@ function Profile() {
       <section className="habits-week-logs" ariana-label="habits-week-logs">
         <div className="habit-week-logs-options">
           <input className="form-input" type="search" placeholder="Search" />
-          <button className="CRUD-button" type="button">
+          <button
+            className="CRUD-button"
+            type="button"
+            onClick={handleAddHabitButton(setIsAddHabitModalOpen)}
+          >
             +
           </button>
         </div>
@@ -164,7 +221,7 @@ function Profile() {
               return (
                 <tr key={habit._id}>
                   <td key={habit._id}>{habit.habitDefinition.name}</td>
-                  {getJSXLogs({ habit, setIsModalOpen })}
+                  {getJSXLogs({ habit, setIsUpdateLogsModalOpen })}
                 </tr>
               );
             })}
@@ -172,8 +229,56 @@ function Profile() {
         </table>
       </section>
 
-      {isModalOpen && (
-        <Modal options={{ setIsModalOpen, refetchLogsData, clickedData }} />
+      {isUpdateLogsModalOpen && (
+        <Modal
+          options={{
+            handleCloseModal: () => {
+              handleCloseModal(setIsUpdateLogsModalOpen);
+            },
+          }}
+        >
+          <form
+            onSubmit={handleSubmit({
+              callAPI: createHabitLog,
+              payload: {
+                variables: {
+                  createHabitLogInput: {
+                    ...updateLogsClickedData,
+                    count: Number(updateLogsModalForm.count),
+                  },
+                },
+              },
+              refetchData,
+              setOpenModal: setIsUpdateLogsModalOpen,
+            })}
+          >
+            <input
+              type="text"
+              name="count"
+              placeholder="count"
+              onChange={handleInputChange(setUpdateLogsModalForm)}
+              required
+            />
+
+            <div className="form-actions">
+              <Button text="Submit" inType="submit" />
+            </div>
+          </form>
+        </Modal>
+      )}
+
+      {isAddHabitModalOpen && (
+        <Modal
+          options={{
+            handleCloseModal: () => {
+              handleCloseModal(setIsAddHabitModalOpen);
+            },
+          }}
+        >
+          <HabitScheduleForm
+            options={{ handleSubmit, refetchData, setIsAddHabitModalOpen }}
+          />
+        </Modal>
       )}
     </div>
   );

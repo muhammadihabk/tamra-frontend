@@ -46,7 +46,6 @@ function SignUp() {
       <h1>Sign Up</h1>
       <form className="login-form" onSubmit={handleFormSubmition}>
         <input
-          className="form-input"
           name="name"
           placeholder="Name"
           value={formFields.name}
@@ -55,7 +54,6 @@ function SignUp() {
           onChange={handleOnChange}
         />
         <input
-          className="form-input"
           name="email"
           placeholder="Email"
           value={formFields.email}
@@ -64,7 +62,6 @@ function SignUp() {
           onChange={handleOnChange}
         />
         <input
-          className="form-input"
           name="password"
           placeholder="Password"
           value={formFields.password}

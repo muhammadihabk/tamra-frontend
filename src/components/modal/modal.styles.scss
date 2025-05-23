@@ -32,38 +32,16 @@ $overlay-color: rgba(0, 0, 0, 0.5);
 
 .modal-content {
   background-color: $boxes-background;
-  padding: 10px;
+  padding: 20px;
   border-radius: $boxes-border-radius;
   box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
-  max-inline-size: 384px;
   inline-size: 100%;
+  max-inline-size: 400px;
   position: relative;
-
-  form {
-    padding: 30px;
-  }
 }
 
 .modal-header {
   text-align: end;
-}
-
-.CRUD-button {
-  inline-size: 35px;
-  block-size: 35px;
-  border: $border;
-  border-radius: 25%;
-  background-color: #00000000;
-  color: inherit;
-  font: inherit;
-  font-size: 21px;
-  text-align: center;
-  outline: none;
-  cursor: pointer;
-
-  &:hover {
-    background-color: $button-fade;
-  }
 }
 
 .form-actions {

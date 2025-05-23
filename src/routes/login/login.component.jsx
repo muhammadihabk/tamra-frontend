@@ -47,7 +47,6 @@ function Login() {
       <h1>Login</h1>
       <form className="login-form" onSubmit={handleFormSubmition}>
         <input
-          className="form-input"
           name="email"
           placeholder="Email"
           value={formFields.email}
@@ -56,7 +55,6 @@ function Login() {
           onChange={handleOnChange}
         />
         <input
-          className="form-input"
           name="password"
           placeholder="Password"
           value={formFields.password}

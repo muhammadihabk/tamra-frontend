@@ -1,0 +1,142 @@
+@import '../../index.scss';
+
+$active-color: #4a90e2;
+$fields-horizontal-gap: 10px;
+
+.habit-schedule-form {
+  max-inline-size: 400px;
+  margin: 0 auto;
+
+  .habit-select {
+    margin-block-end: 20px;
+  }
+
+  input[type='number'] {
+    flex: 0 0 5rem;
+    border: $border;
+    font-size: 1.15em;
+    inline-size: 3rem;
+    text-align: center;
+  }
+
+  .count-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: $fields-horizontal-gap;
+    margin-bottom: 20px;
+
+    input {
+      inline-size: 100% !important;
+      flex-grow: 1;
+    }
+  }
+
+  .form-label {
+    display: block;
+    margin-bottom: 8px;
+    text-align: start;
+  }
+
+  input,
+  select {
+    inline-size: 100%;
+
+    &:disabled {
+      background-color: lighten(#ffffff, 5%);
+      cursor: not-allowed;
+      color: #999;
+    }
+  }
+
+  .repeat-input-group {
+    display: flex;
+    gap: $fields-horizontal-gap;
+    margin-bottom: 20px;
+  }
+
+  .weekday-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+
+    .weekday-button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: none;
+      border-radius: 50%;
+      inline-size: 40px;
+      block-size: 40px;
+      font: inherit;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 0.9rem;
+
+      &:hover:not(.active) {
+        background-color: #0000007d;
+      }
+
+      &.active {
+        background-color: $active-color;
+        border-color: $active-color;
+        color: white;
+      }
+    }
+  }
+
+  .month-options-group {
+    margin-bottom: 20px;
+
+    .radio-option {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+
+      input[type='radio'] {
+        appearance: none;
+        inline-size: 30px;
+        block-size: 30px;
+        border: 2px solid $text-primary-light;
+        border-radius: 50%;
+        margin-inline-end: 15px;
+        position: relative;
+        cursor: pointer;
+        outline: none;
+
+        &:checked {
+          border-color: $primary;
+
+          &::before {
+            content: '';
+            display: block;
+            inline-size: 15px;
+            block-size: 15px;
+            background-color: $primary;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+          }
+        }
+      }
+
+      label {
+        display: flex;
+        align-items: center;
+        flex-grow: 1;
+        gap: $fields-horizontal-gap;
+
+        select {
+          flex-grow: 1;
+          padding: 10px 12px;
+        }
+      }
+    }
+  }
+
+  .input-time {
+    text-align: center;
+  }
+}
