@@ -2,46 +2,84 @@ import { useAuth } from '../../context/auth.context';
 import Spinner from '../../components/spinner/spinner.component';
 import './profile.styles.scss';
 import Modal from '../../components/modal/modal.component';
-import { useQuery, gql, useMutation } from '@apollo/client';
+import { useQuery, gql } from '@apollo/client';
 import { useState } from 'react';
+import UpdateLogsForm from '../../components/update-logs-form/update-logs-form.component';
 import HabitScheduleForm from '../../components/habit-schedule-form/habit-schedule-form.component';
-import Button from '../../components/button/button.component';
-
-function getLast7Logs(logs) {
-  return logs.slice(-7);
-}
+import * as dateFns from 'date-fns';
 
 /**
- * Return day e.g. "Sat" or "Fri"
+ * Return day e.g. "Sat", "Fri"
  */
 function getShortDayOfWeek(date) {
   return date.toLocaleDateString(undefined, { weekday: 'short' });
 }
 
-function getPast7DaysJSX() {
-  const past7Days = getPast7Days();
-  return past7Days.map((day) => (
+function generateLastNDaysDates(numDays) {
+  const dates = [];
+  const today = new Date();
+  for (let i = numDays - 1; i >= 0; i--) {
+    const date = dateFns.subDays(today, i);
+    dates.push(date);
+  }
+
+  return dates;
+}
+
+function getlast7DaysDatesJSX() {
+  const last7DaysDates = generateLastNDaysDates(7);
+  return last7DaysDates.map((day) => (
     <th className="week-days" key={day}>
       {getShortDayOfWeek(new Date(day))}
     </th>
   ));
 }
 
-function getPast7Days() {
-  const past7Days = [];
-  const today = new Date();
-  const weekAgo = new Date(today.setDate(today.getDate() - 6));
-  for (let i = 0; i < 7; i++) {
-    past7Days.push(
-      new Date(new Date().setDate(weekAgo.getDate() + i)).setHours(0, 0, 0, 0)
-    );
+function getJSXLogs(options) {
+  const { habit, setIsUpdateLogsModalOpen } = options;
+  const { logs: inLogs } = habit;
+  if (!inLogs) {
+    return [];
   }
 
-  return past7Days;
+  const logs = inLogs.slice(-7);
+  const jsxLogs = [];
+  const last7DaysDates = generateLastNDaysDates(7);
+  last7DaysDates.forEach((date, i) => {
+    const foundLog = logs.find((log) => {
+      const logDate = new Date(log.date).toLocaleString();
+
+      return dateFns.isSameDay(logDate, date);
+    });
+    const count = foundLog?.count || '-';
+    let className = '';
+    if (foundLog?.count) {
+      className = count >= habit.goal.count ? 'goal-met' : 'goal-not-met';
+    }
+
+    jsxLogs.push(
+      <td
+        className={className}
+        key={`${i}${habit._id}`}
+        data-habit-id={habit._id}
+        data-count={count}
+        data-date={new Date(date).toISOString()}
+        onClick={handleLogsClick(setIsUpdateLogsModalOpen)}
+      >
+        {count}
+      </td>
+    );
+  });
+
+  return jsxLogs;
+}
+
+function handleCloseModal(setOpenModal) {
+  setOpenModal(false);
 }
 
 let updateLogsClickedData = null;
-function handleOpenUpdateLogsModal(setIsUpdateLogsModalOpen) {
+function handleLogsClick(setIsUpdateLogsModalOpen) {
   return (e) => {
     const dataset = e.target.dataset;
 
@@ -53,55 +91,13 @@ function handleOpenUpdateLogsModal(setIsUpdateLogsModalOpen) {
   };
 }
 
-function getJSXLogs(options) {
-  const { habit, setIsUpdateLogsModalOpen } = options;
-  const { logs: inLogs } = habit;
-  if (!inLogs) {
-    return [];
-  }
-
-  const logs = getLast7Logs(inLogs);
-  const jsxLogs = [];
-  const past7Days = getPast7Days();
-  past7Days.forEach((day, i) => {
-    const foundLog = logs.find((log) => {
-      const logDate = new Date(log.date).setHours(0, 0, 0, 0);
-      const todayDate = day;
-      return logDate === todayDate;
-    });
-    const count = foundLog?.count || 0;
-    const className = count >= habit.goal.count ? 'goal-met' : 'goal-not-met';
-
-    jsxLogs.push(
-      <td
-        className={className}
-        key={i}
-        data-habit-id={habit._id}
-        data-count={count}
-        data-date={new Date(day).toISOString()}
-        onClick={handleOpenUpdateLogsModal(setIsUpdateLogsModalOpen)}
-      >
-        {count}
-      </td>
-    );
-  });
-
-  return jsxLogs;
-}
-
-function handleCloseModal(setOpenModal, refetchData) {
-  if (refetchData) {
-    refetchData(true);
-  }
-  setOpenModal(false);
-}
-
 function handleSubmit(options) {
   const { callAPI, payload, refetchData, setOpenModal } = options;
 
   try {
     callAPI(payload);
-    handleCloseModal(setOpenModal, refetchData);
+    handleCloseModal(setOpenModal);
+    refetchData();
   } catch (error) {
     console.log(error);
   }
@@ -153,31 +149,10 @@ const getUser = gql`
   }
 `;
 
-const createHabitLogQuery = gql`
-  mutation ($createHabitLogInput: CreateHabitLogInput!) {
-    createHabitLog(createHabitLogInput: $createHabitLogInput) {
-      message
-    }
-  }
-`;
-
 function Profile() {
   const { userId } = useAuth();
   const [isUpdateLogsModalOpen, setIsUpdateLogsModalOpen] = useState(false);
-  const [createHabitLog] = useMutation(createHabitLogQuery);
-  const [updateLogsModalForm, setUpdateLogsModalForm] = useState({});
   const [isAddHabitModalOpen, setIsAddHabitModalOpen] = useState(false);
-
-  function handleInputChange(stateSetter) {
-    return (e) => {
-      const { name, value } = e.target;
-
-      stateSetter((form) => ({
-        ...form,
-        [name]: value,
-      }));
-    };
-  }
 
   const {
     loading,
@@ -213,7 +188,7 @@ function Profile() {
           <thead>
             <tr>
               <th></th>
-              {getPast7DaysJSX()}
+              {getlast7DaysDatesJSX()}
             </tr>
           </thead>
           <tbody>
@@ -237,33 +212,14 @@ function Profile() {
             },
           }}
         >
-          <form
-            onSubmit={handleSubmit({
-              callAPI: createHabitLog,
-              payload: {
-                variables: {
-                  createHabitLogInput: {
-                    ...updateLogsClickedData,
-                    count: Number(updateLogsModalForm.count),
-                  },
-                },
-              },
+          <UpdateLogsForm
+            options={{
+              updateLogsClickedData,
+              handleSubmit,
               refetchData,
-              setOpenModal: setIsUpdateLogsModalOpen,
-            })}
-          >
-            <input
-              type="text"
-              name="count"
-              placeholder="count"
-              onChange={handleInputChange(setUpdateLogsModalForm)}
-              required
-            />
-
-            <div className="form-actions">
-              <Button text="Submit" inType="submit" />
-            </div>
-          </form>
+              setIsUpdateLogsModalOpen,
+            }}
+          />
         </Modal>
       )}
 

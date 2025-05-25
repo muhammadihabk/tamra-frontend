@@ -57,22 +57,24 @@ $options-block-size: 40px;
   tbody td {
     padding: 20px;
     text-align: center;
-
+    
     &:first-child {
       font-weight: bold !important;
     }
     &:not(:first-child) {
       font-size: 1.25rem;
       cursor: pointer;
+      color: $text-primary-light; 
     }
     &:not(:first-child):hover {
       background-color: $button-fade;
     }
     &.goal-met {
-      color: $primary;
+      background-color: $primary-fade;
     }
     &.goal-not-met {
-      color: $text-primary-light;
+      color: $text-primary-light; 
+      background-color: $color-primary-50;
     }
   }
 }
