@@ -3,10 +3,11 @@ import Spinner from '../../components/spinner/spinner.component';
 import './profile.styles.scss';
 import Modal from '../../components/modal/modal.component';
 import { useQuery, gql } from '@apollo/client';
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import UpdateLogsForm from '../../components/update-logs-form/update-logs-form.component';
 import HabitScheduleForm from '../../components/habit-schedule-form/habit-schedule-form.component';
 import * as dateFns from 'date-fns';
+import { Outlet, useNavigate } from 'react-router-dom';
 
 /**
  * Return day e.g. "Sat", "Fri"
@@ -38,13 +39,28 @@ function getlast7DaysDatesJSX() {
 function getJSXLogs(options) {
   const { habit, setIsUpdateLogsModalOpen } = options;
   const { logs: inLogs } = habit;
+  const last7DaysDates = generateLastNDaysDates(7);
   if (!inLogs) {
-    return [];
+    let result = [];
+    last7DaysDates.forEach((date, i) => {
+      result.push(
+        <td
+          key={`${i}${habit._id}`}
+          data-habit-id={habit._id}
+          data-count="-"
+          data-date={new Date(date).toISOString()}
+          onClick={handleLogsClick(setIsUpdateLogsModalOpen)}
+        >
+          -
+        </td>
+      );
+    });
+
+    return result;
   }
 
   const logs = inLogs.slice(-7);
   const jsxLogs = [];
-  const last7DaysDates = generateLastNDaysDates(7);
   last7DaysDates.forEach((date, i) => {
     const foundLog = logs.find((log) => {
       const logDate = new Date(log.date).toLocaleString();
@@ -153,6 +169,11 @@ function Profile() {
   const { userId } = useAuth();
   const [isUpdateLogsModalOpen, setIsUpdateLogsModalOpen] = useState(false);
   const [isAddHabitModalOpen, setIsAddHabitModalOpen] = useState(false);
+  const navigate = useNavigate();
+
+  function handleHabitNameClick(habitId) {
+    navigate(`/me/habit/${habitId}`);
+  }
 
   const {
     loading,
@@ -171,72 +192,80 @@ function Profile() {
   return loading ? (
     <Spinner />
   ) : (
-    <div className="page-wrapper">
-      <section className="habits-week-logs" ariana-label="habits-week-logs">
-        <div className="habit-week-logs-options">
-          <input className="form-input" type="search" placeholder="Search" />
-          <button
-            className="CRUD-button"
-            type="button"
-            onClick={handleAddHabitButton(setIsAddHabitModalOpen)}
-          >
-            +
-          </button>
-        </div>
+    <Fragment>
+      <div className="page-wrapper">
+        <Outlet />
+        <section className="habits-week-logs" ariana-label="habits-week-logs">
+          <div className="habit-week-logs-options">
+            <input className="form-input" type="search" placeholder="Search" />
+            <button
+              className="CRUD-button"
+              type="button"
+              onClick={handleAddHabitButton(setIsAddHabitModalOpen)}
+            >
+              +
+            </button>
+          </div>
 
-        <table>
-          <thead>
-            <tr>
-              <th></th>
-              {getlast7DaysDatesJSX()}
-            </tr>
-          </thead>
-          <tbody>
-            {user.habitsByUserId.map((habit) => {
-              return (
-                <tr key={habit._id}>
-                  <td key={habit._id}>{habit.habitDefinition.name}</td>
-                  {getJSXLogs({ habit, setIsUpdateLogsModalOpen })}
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </section>
+          <table>
+            <thead>
+              <tr>
+                <th></th>
+                {getlast7DaysDatesJSX()}
+              </tr>
+            </thead>
+            <tbody>
+              {user.habitsByUserId.map((habit) => {
+                return (
+                  <tr key={habit._id}>
+                    <td
+                      key={habit._id}
+                      onClick={() => handleHabitNameClick(habit._id)}
+                    >
+                      {habit.habitDefinition.name}
+                    </td>
+                    {getJSXLogs({ habit, setIsUpdateLogsModalOpen })}
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </section>
 
-      {isUpdateLogsModalOpen && (
-        <Modal
-          options={{
-            handleCloseModal: () => {
-              handleCloseModal(setIsUpdateLogsModalOpen);
-            },
-          }}
-        >
-          <UpdateLogsForm
+        {isUpdateLogsModalOpen && (
+          <Modal
             options={{
-              updateLogsClickedData,
-              handleSubmit,
-              refetchData,
-              setIsUpdateLogsModalOpen,
+              handleCloseModal: () => {
+                handleCloseModal(setIsUpdateLogsModalOpen);
+              },
             }}
-          />
-        </Modal>
-      )}
+          >
+            <UpdateLogsForm
+              options={{
+                updateLogsClickedData,
+                handleSubmit,
+                refetchData,
+                setIsUpdateLogsModalOpen,
+              }}
+            />
+          </Modal>
+        )}
 
-      {isAddHabitModalOpen && (
-        <Modal
-          options={{
-            handleCloseModal: () => {
-              handleCloseModal(setIsAddHabitModalOpen);
-            },
-          }}
-        >
-          <HabitScheduleForm
-            options={{ handleSubmit, refetchData, setIsAddHabitModalOpen }}
-          />
-        </Modal>
-      )}
-    </div>
+        {isAddHabitModalOpen && (
+          <Modal
+            options={{
+              handleCloseModal: () => {
+                handleCloseModal(setIsAddHabitModalOpen);
+              },
+            }}
+          >
+            <HabitScheduleForm
+              options={{ handleSubmit, refetchData, setIsAddHabitModalOpen }}
+            />
+          </Modal>
+        )}
+      </div>
+    </Fragment>
   );
 }
 

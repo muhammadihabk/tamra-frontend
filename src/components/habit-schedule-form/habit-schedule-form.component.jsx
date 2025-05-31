@@ -153,17 +153,15 @@ function HabitScheduleForm(props) {
           },
         };
 
-        if (
-          formData.repeat.interval === 'week' ||
-          formData.repeat.interval === 'month'
-        ) {
-          createHabitInstanceInput.repeat.on = formData.repeat.on;
+        if (formData.repeat.interval === 'week') {
+          createHabitInstanceInput.goal.repeat.on = formData.repeat.on;
+        } else if (formData.repeat.interval === 'month') {
           if (formData.monthRecurrence.type === 'dayOfMonth') {
-            createHabitInstanceInput.repeat.on = [
+            createHabitInstanceInput.goal.repeat.on = [
               formData.monthRecurrence.dayOfMonth,
             ];
           } else if (formData.monthRecurrence.type === 'nthDayOfWeek') {
-            createHabitInstanceInput.repeat.on = [
+            createHabitInstanceInput.goal.repeat.on = [
               `${formData.monthRecurrence.nthWeek}_${formData.monthRecurrence.dayOfWeekForNth}`,
             ];
           }
