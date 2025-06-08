@@ -1,62 +1,57 @@
-@import '../../index.scss';
+@import '../../styles/index.scss';
 
-$cells-padding-left: 40px;
-$options-block-size: 40px;
+$cells-padding-left: 2.5rem;
+$options-block-size: 2.5rem;
 
 .habits-week-logs {
-  padding: 20px;
-  border: $border;
-  background-color: #ffffff;
-  border-radius: $boxes-border-radius;
+  display: flex;
+  flex-direction: column;
+  gap: $gap;
+  max-inline-size: 50rem;
+  min-inline-size: 0;
+  margin-inline: auto;
 
-  .habit-week-logs-options {
+  border: $border;
+  border-radius: $boxes-border-radius;
+  padding: $padding;
+  background-color: #ffffff;
+
+  .options {
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin: 0 auto;
-    padding: 20px;
-    inline-size: 400px;
+    gap: $gap;
+    margin-inline: auto;
+    margin-block-start: 2rem;
+    max-inline-size: 21rem;
   }
-
   form input {
     block-size: $options-block-size;
   }
-
   .CRUD-button {
     inline-size: $options-block-size;
     block-size: $options-block-size;
   }
 
-  .week-days {
-    color: $text-primary-light;
-  }
-
   table {
-    inline-size: 70%;
-    margin-inline: auto;
+    margin-block: 2rem;
+    inline-size: 100%;
+    text-align: center;
     border-collapse: collapse;
   }
-
+  .week-days {
+    color: $text-500;
+  }
   thead th {
-    padding: 20px;
-    text-align: center;
-    font: inherit;
+    padding-block-end: 1rem;
   }
-
-  thead tr:first-child th:not(:first-child) {
-    padding-left: $cells-padding-left;
-  }
-
   tbody tr {
     border-bottom: $border;
     &:last-child {
       border-bottom: none;
     }
   }
-
   tbody td {
-    padding: 20px;
-    text-align: center;
+    padding-block: 1rem;
     cursor: pointer;
 
     &:hover {
@@ -67,14 +62,15 @@ $options-block-size: 40px;
     }
     &:not(:first-child) {
       font-size: 1.25rem;
-      color: $text-primary-light;
+      color: $text-500;
     }
-    
+
     &.goal-met {
       background-color: $primary-fade;
+      color: $text-100;
     }
     &.goal-not-met {
-      color: $text-primary-light;
+      color: $text-500;
       background-color: $color-primary-50;
     }
   }

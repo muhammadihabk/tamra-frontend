@@ -1,0 +1,142 @@
+/* _________ Variables _________ */
+$primary: #38d5a4;
+$primary-fade: #38d5a47d;
+$color-primary-50: #38d5a40f;
+
+$bg-300: #fdfdfd;
+$bg-400: #f7f7f7;
+$bg-500: #dfdfdf;
+$text-100: #fdfdfd;
+$text-300: #9b9b9b;
+$text-400: #919191;
+$text-500: #797979;
+$text-600: #595959;
+$line-color-500: #dfdfdf;
+$line-color-600: #636363;
+$button-fade: #ededed7d;
+
+$border: 1px solid $line-color-500;
+$boxes-border-radius: 1rem;
+$padding: 1rem;
+$gap: 1rem;
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: $bg-400;
+  font-family: 'Inter', sans-serif;
+  font-optical-sizing: auto;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+  line-height: 1.3;
+}
+h1 {
+  font-weight: 900;
+}
+h2 {
+  font-size: 2rem;
+  font-weight: 700;
+}
+h3 {
+  font-size: 1.75rem;
+}
+
+h1,
+h2,
+h3 {
+  letter-spacing: 0.25rem;
+}
+
+p,
+ul,
+a {
+  letter-spacing: 0.03rem;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul {
+  list-style: none;
+  padding-inline: 0;
+  margin-block: 0;
+}
+
+form {
+  text-align: center;
+  padding: $padding;
+}
+
+label {
+  color: $text-500;
+}
+
+input,
+select {
+  inline-size: 300px;
+  block-size: 45px;
+  border: $border;
+  border-radius: 7px;
+  padding: 8px 12px;
+  background-color: #00000000;
+  color: $text-500;
+  font-size: 1.15rem;
+  font: inherit;
+  outline: none;
+  align-self: center;
+
+  /* Change autocomplete styles in WebKit */
+  &:-webkit-autofill,
+  &:-webkit-autofill:hover,
+  &:-webkit-autofill:focus {
+    -webkit-text-fill-color: inherit;
+    -webkit-box-shadow: 0 0 0px 1000px $bg-400 inset;
+  }
+  &[type='password'] {
+    letter-spacing: 0.05rem;
+  }
+  &[type='search']::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+    cursor: pointer;
+    inline-size: 17px;
+    block-size: 17px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='21px' viewBox='0 -960 960 960' width='21px' fill='%23b9b9b9'%3E%3Cpath d='m291-240-51-51 189-189-189-189 51-51 189 189 189-189 51 51-189 189 189 189-51 51-189-189-189 189Z'/%3E%3C/svg%3E");
+  }
+  &::placeholder {
+    color: var(--text-100);
+  }
+}
+
+table {
+  font: inherit;
+}
+
+.CRUD-button {
+  inline-size: 45px;
+  block-size: 45px;
+  border: none;
+  border-radius: 50%;
+  background-color: #f6f6f6;
+  color: inherit;
+  font: inherit;
+  font-size: 21px;
+  text-align: center;
+  outline: none;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $button-fade;
+  }
+}

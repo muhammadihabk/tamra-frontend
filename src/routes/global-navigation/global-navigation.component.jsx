@@ -12,7 +12,7 @@ function GlobalNavigation() {
         <ul>
           <li>
             <Link to="/">
-              <img src={'/images/logo.png'} alt="Tamra Logo" />
+              <img src={'/images/logo.svg'} alt="Tamra Logo" />
             </Link>
           </li>
           <div>

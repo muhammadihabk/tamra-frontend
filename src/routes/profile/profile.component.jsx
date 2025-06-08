@@ -194,9 +194,8 @@ function Profile() {
   ) : (
     <Fragment>
       <div className="page-wrapper">
-        <Outlet />
         <section className="habits-week-logs" ariana-label="habits-week-logs">
-          <div className="habit-week-logs-options">
+          <div className="options">
             <input className="form-input" type="search" placeholder="Search" />
             <button
               className="CRUD-button"

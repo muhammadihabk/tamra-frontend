@@ -13,6 +13,7 @@ function Login() {
   const { login } = useAuth();
   const [formFields, setFormFields] = useState(defaultFormFields);
   const navigate = useNavigate();
+
   const handleFormSubmition = async (e) => {
     e.preventDefault();
     try {

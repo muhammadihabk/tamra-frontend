@@ -1,43 +1,29 @@
-@import '../../index.scss';
+@import '../../styles/index.scss';
 
-$overlay-color: rgba(0, 0, 0, 0.5);
-
-.clickable-text {
-  cursor: pointer;
-  text-decoration: underline;
-
-  &:hover {
-    color: $text-bright-fade;
-  }
-}
-
-.modal-wrapper-close {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  cursor: pointer;
-}
 .modal-overlay {
   position: fixed;
   top: 0;
-  left: 0;
   right: 0;
   bottom: 0;
-  background-color: $overlay-color;
+  left: 0;
+  z-index: 2000;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 50;
+  background-color: #191919bd;
+  backdrop-filter: blur(10px);
 }
 
 .modal-content {
-  background-color: $boxes-background;
-  padding: 20px;
-  border-radius: $boxes-border-radius;
-  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
-  inline-size: 100%;
-  max-inline-size: 400px;
   position: relative;
+
+  max-inline-size: 400px;
+  inline-size: 100%;
+  border-radius: $boxes-border-radius;
+  padding: $padding;
+  background-color: #ffffff;
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
 .modal-header {
@@ -45,6 +31,5 @@ $overlay-color: rgba(0, 0, 0, 0.5);
 }
 
 .form-actions {
-  text-align: center;
-  margin-block-start: 20px;
+  margin-block-start: 1rem;
 }

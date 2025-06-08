@@ -1,4 +1,4 @@
-@import '../../index.scss';
+@import '../../styles/index.scss';
 
 $spinner-animation: spin 0.5s linear infinite;
 
@@ -6,7 +6,7 @@ $spinner-animation: spin 0.5s linear infinite;
   display: inline-block;
   inline-size: 50px;
   block-size: 50px;
-  border: 2px solid $text-primary-light;
+  border: 2px solid $text-500;
   border-radius: 50%;
   border-top-color: #000;
   animation: $spinner-animation;

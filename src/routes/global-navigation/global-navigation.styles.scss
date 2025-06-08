@@ -1,10 +1,10 @@
-@import '../../index.scss';
+@import '../../styles/index.scss';
 
 nav {
-  border-bottom: 1px $brand-gray solid;
+  border-bottom: $border;
   padding: 10px 70px;
   background-color: #ffffff;
-  
+
   ul {
     display: flex;
     justify-content: space-between;
@@ -12,21 +12,21 @@ nav {
     list-style-type: none;
     margin: 0;
     padding: 0;
-    
+
     img {
       inline-size: 60px;
     }
     li {
       display: flex;
       align-items: center;
-      
+
       a {
         text-decoration: none;
         font-weight: bold;
         color: inherit;
         &:hover,
         &:focus-visible {
-          color: $text-primary-light;
+          color: $text-500;
         }
       }
     }

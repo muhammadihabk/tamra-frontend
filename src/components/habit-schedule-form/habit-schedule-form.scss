@@ -1,11 +1,11 @@
-@import '../../index.scss';
+@import '../../styles/index.scss';
 
 $active-color: #4a90e2;
 $fields-horizontal-gap: 10px;
 
 .habit-schedule-form {
   max-inline-size: 400px;
-  margin: 0 auto;
+  margin: 1rem auto;
 
   .habit-select {
     margin-block-end: 20px;
@@ -97,7 +97,7 @@ $fields-horizontal-gap: 10px;
         appearance: none;
         inline-size: 30px;
         block-size: 30px;
-        border: 2px solid $text-primary-light;
+        border: 2px solid $text-500;
         border-radius: 50%;
         margin-inline-end: 15px;
         position: relative;
